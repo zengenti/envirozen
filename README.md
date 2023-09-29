@@ -18,4 +18,4 @@ Enviro Indoor (Pico W Aboard) – Enviro Indoor + Accessory Kit [Enviro Indoor ]
 
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
-[1]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
+[2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
