@@ -22,7 +22,7 @@ As of October 2023 this will developed into Python for deployment onto a more po
 [TUNE-S-600x600-M1][4] Mechanical damper with M1 Actuator
 
 
-![Flow of Logic](envirozen/docs/images/freeair.webp)
+![Flow of Logic](docs/images/freeair.webp)
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
 [2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
