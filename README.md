@@ -13,8 +13,9 @@ As of October 2023 this will developed into Python for deployment onto a more po
 
 **Component List**
 
-Rasbpberry Pi 4 or better [Raspberry Pi 4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
+Rasbpberry Pi 4 or better [Raspberry Pi 4 Model B][1]
+Enviro Indoor (Pico W Aboard) – Enviro Indoor + Accessory Kit [Enviro Indoor ][2]
 
-[Raspberry Pi 4 Model B][1]
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
+[1]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
