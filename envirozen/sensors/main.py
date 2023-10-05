@@ -15,25 +15,33 @@ wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(ssid, password)
 
+# Board location, this will be used in the Prometheus metrics to identify the sensor
+# it can be a location or a name
+location = 'ambient'
+
 # This will be replaced with the actual metric values
 metrics_template = """
+# HELP Temperature recorded in celcius
 # TYPE temperature gauge
-temperature {}
+temperature{{location="{location}"}} {temperature}
 
+# HELP Humidity recorded in percent
 # TYPE humidity gauge
-humidity {}
+humidity{{location="{location}"}} {humidity}
 
+# HELP Air pressure recorded in hectopascals hPA
 # TYPE pressure gauge
-pressure {}
+pressure{{location="{location}"}} {pressure}
 
+# Luminance recorded as lux
 # TYPE luminance gauge
-luminance {}
+luminance{{location="{location}"}} {luminance}
 
+# Color temperature recorded in kelvin
 # TYPE color_temperature gauge
-color_temperature {}
+color_temperature{{location="{location}"}} {color_temperature}
 """
 
- 
 # Wait for connect or fail
 max_wait = 10
 while max_wait > 0:
@@ -55,8 +63,10 @@ else:
 addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
  
 s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(addr)
 s.listen(1)
+
  
 print('listening on', addr)
 
@@ -82,8 +92,17 @@ while True:
             # Handle the metric response here
 
             readings = sensor_readings.get_sensor_readings()
-            response = metrics_template.format(readings["temperature"], readings["humidity"], readings["pressure"], readings["luminance"], readings["color_temperature"])
-                
+
+            response = metrics_template.format(
+                location=location,
+                temperature=readings["temperature"],
+                humidity=readings["humidity"],
+                pressure=readings["pressure"],
+                luminance=readings["luminance"],
+                color_temperature=readings["color_temperature"]
+            )
+
+
             cl.send(b'HTTP/1.0 200 OK\r\nContent-type: text/plain\r\n\r\n')
             cl.send(response.encode())
         else:
