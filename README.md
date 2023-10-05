@@ -28,3 +28,15 @@ As of October 2023 this will developed into Python for deployment onto a more po
 [2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
 [3]: https://www.plugandcool.co.uk/product/1-5-grain-store-fan/
 [4]: https://www.puravent.co.uk/tune-s-600x600-m1.html
+
+** Deploy Enviro Indoor **
+
+Backup up the original main.py first.
+Using a program such as Thonny copy main.py and sensor_readings.py from sensors folder on to the root partition.
+Edit main.py update values for 
+
+ssid = 'your_network_name'
+password = 'your_password'
+location = 'label_for_identification'
+
+Restart the Pico W and navigate to /metrics
