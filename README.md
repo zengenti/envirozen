@@ -70,6 +70,9 @@ snap services
 
 [Grafana][7] will be installed locally with the normal node exporter dashboard plus a custom dashboard from the sensors.
 
+By default Prometheus will be http://ipaddres:9090
+By default Grafana will be http://ipaddres:3000
+
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
 [2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
