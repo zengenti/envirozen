@@ -43,7 +43,14 @@ Restart the Pico W and navigate to http://ipaddres/metrics
 
 **Deploy of Raspberry Pi4**
 
-For the controller we are going to use [Ubuntu 22.04 Server][5]. Follow the instructions at this [tutorial][6]
+For the controller we are going to use [Ubuntu 22.04 Server][5]. Follow the instructions at this [tutorial][6].
+Install NTP
+ ```sudo apt install ntp
+sudo vim /etc/ntp.conf
+sudo systemctl restart ntp ``
+
+We will use snaps to install the [Prometheus][7] server on the Raspberry Pi.
+
 
 
 
@@ -54,3 +61,4 @@ For the controller we are going to use [Ubuntu 22.04 Server][5]. Follow the inst
 [4]: https://www.puravent.co.uk/tune-s-600x600-m1.html
 [5]: https://ubuntu.com/download/raspberry-pi
 [6]: https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#2-prepare-the-sd-card
+[7]: https://snapcraft.io/install/prometheus/raspbian
