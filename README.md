@@ -57,7 +57,16 @@ sudo systemctl restart ntp
 
 We will use snaps to install the [Prometheus][7] server on the Raspberry Pi.
 
+When installed with snap prometheus.yml will be located at
+`var/snap/prometheus/current`
 
+Copy prometheus.yml and update with correct targets
+```
+sudo snap restart prometheus.prometheus
+```
+```
+snap services
+```
 
 
 
