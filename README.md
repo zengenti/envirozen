@@ -68,6 +68,7 @@ sudo snap restart prometheus.prometheus
 snap services
 ```
 
+[Grafana][7] will be installed locally with the normal node exporter dashboard plus a custom dashboard from the sensors.
 
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
@@ -77,3 +78,4 @@ snap services
 [5]: https://ubuntu.com/download/raspberry-pi
 [6]: https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#2-prepare-the-sd-card
 [7]: https://snapcraft.io/install/prometheus/raspbian
+[8]: https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
