@@ -45,9 +45,11 @@ Restart the Pico W and navigate to http://ipaddres/metrics
 
 For the controller we are going to use [Ubuntu 22.04 Server][5]. Follow the instructions at this [tutorial][6].
 Install NTP
- ```sudo apt install ntp
+ ```
+sudo apt install ntp
 sudo vim /etc/ntp.conf
-sudo systemctl restart ntp ``
+sudo systemctl restart ntp 
+```
 
 We will use snaps to install the [Prometheus][7] server on the Raspberry Pi.
 
