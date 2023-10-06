@@ -24,10 +24,6 @@ As of October 2023 this will developed into Python for deployment onto a more po
 
 ![Flow of Logic](docs/images/freeair.webp)
 
-[1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
-[2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
-[3]: https://www.plugandcool.co.uk/product/1-5-grain-store-fan/
-[4]: https://www.puravent.co.uk/tune-s-600x600-m1.html
 
 **Deploy Enviro Indoor**
 
@@ -42,4 +38,19 @@ Edit main.py update values for
 | location  | `label_for_identification` |
 
 
-Restart the Pico W and navigate to /metrics
+Restart the Pico W and navigate to http://ipaddres/metrics
+
+
+**Deploy of Raspberry Pi4**
+
+For the controller we are going to use [Ubuntu 22.04 Server][5]. Follow the instructions at this [tutorial][6]
+
+
+
+
+[1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
+[2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
+[3]: https://www.plugandcool.co.uk/product/1-5-grain-store-fan/
+[4]: https://www.puravent.co.uk/tune-s-600x600-m1.html
+[5]: https://ubuntu.com/download/raspberry-pi
+[6]: https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#2-prepare-the-sd-card
