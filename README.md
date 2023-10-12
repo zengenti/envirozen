@@ -17,6 +17,8 @@ As of October 2023 this will developed into Python for deployment onto a more po
 
 [Enviro Indoor (Pico W Aboard) – Enviro Indoor + Accessory Kit][2] x number of areas to monitor
 
+[Weatherproof Cover/Enclosure for Outdoor Sensors ][9] 
+
 [Fan 1.5Kw ][3] x 2
 
 [TUNE-S-600x600-M1][4] Mechanical damper with M1 Actuator
@@ -82,3 +84,4 @@ By default Grafana will be http://ipaddres:3000
 [6]: https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#2-prepare-the-sd-card
 [7]: https://snapcraft.io/install/prometheus/raspbian
 [8]: https://grafana.com/docs/grafana/latest/setup-grafana/installation/debian/
+[9]: https://shop.pimoroni.com/products/weatherproof-cover-for-outdoor-sensors?variant=40047884468307
