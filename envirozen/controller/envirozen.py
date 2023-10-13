@@ -1,4 +1,4 @@
-from config import QUERIES
+from config import QUERIES, METRIC_THRESHOLDS
 from prometheus import query_prometheus
 from actions import temperature_within_tolerance, temperature_above_tolerance
 
@@ -12,8 +12,9 @@ def print_metrics():
             if temperature_value:
                 temperature_float = float(temperature_value)
 
-                if metric_name == 'temperature_ambient':
-                    if temperature_float < 30:
+                threshold = METRIC_THRESHOLDS.get(metric_name, None)
+                if threshold is not None:  # Check if the threshold is defined for the metric
+                    if temperature_float < threshold:
                         temperature_within_tolerance(temperature_float)
                     else:
                         temperature_above_tolerance(temperature_float)
