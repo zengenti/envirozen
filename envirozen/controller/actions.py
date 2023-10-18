@@ -43,7 +43,7 @@ def open_damper():
 def close_damper():
     GPIO.output(DAMPER_PIN, GPIO.LOW)
 
-def ac_on():
+def ac_on(temperature_value):
     
     # Close the damper if AC is On
     # Turn off both fans
@@ -53,7 +53,7 @@ def ac_on():
     turn_off_fan_2()
     turn_on_ac()
 
-def freecooling():
+def freecooling(temperature_value):
     
     # Open the damper as AC is off
     # Turn on fan 1
@@ -64,7 +64,7 @@ def freecooling():
     turn_off_fan_2()
     turn_off_ac()
 
-def freecooling_turbo():
+def freecooling_turbo(temperature_value):
     
     # Open the damper as AC is off
     # Turn on both fans
@@ -74,7 +74,7 @@ def freecooling_turbo():
     turn_on_fan_2()
     turn_off_ac()
 
-def passive_cooling():
+def passive_cooling(temperature_value):
     
     # Open the damper as AC is off
     # Turn off both fans
