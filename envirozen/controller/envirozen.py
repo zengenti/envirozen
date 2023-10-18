@@ -31,33 +31,33 @@ def room_mode():
                 
                 # Check if there's a defined threshold for the current metric
                 if threshold is not None:
-                    # Check if the current metric is 'temperature_ambient'
+
+                    # Call the 'ac_on' function when 'temperature_ambient' exceeds threshold
                     if metric_name == 'temperature_ambient' and temperature_value > threshold:
-                        # Call the 'ac_on' function when 'temperature_ambient' exceeds threshold
                         actions.ac_on(temperature_value)
                         print(f" Room in AC Mode: Ambient Temperature of ({temperature_value}°C) is above Tolerance")
                         action_taken = True
                         break  # Exit the loop once the condition is met
+                    # Call the 'ac_on' function when 'temperature_hot' exceeds threshold
                     elif metric_name == 'temperature_hot' and temperature_value > threshold:
-                        # Call the 'ac_on' function when 'temperature_hot' exceeds threshold
                         actions.ac_on(temperature_value)
                         print(f" Room in AC Mode: Hot Ailse Temperature of ({temperature_value}°C) is above Tolerance")
                         action_taken = True
                         break  # Exit the loop once the condition is met
+                    # Call the 'ac_on' function when 'temperature_cold' exceeds threshold
                     elif metric_name == 'temperature_cold' and temperature_value > threshold:
-                        # Call the 'ac_on' function when 'temperature_cold' exceeds threshold
                         actions.ac_on(temperature_value)
                         print(f" Room in AC Mode: Cold Ailse Temperature of ({temperature_value}°C) is above Tolerance")
                         action_taken = True
                         break  # Exit the loop once the condition is met
+                    # Call the 'freecooling_turbo' function when 'temperature_cold_warning' exceeds threshold
                     elif metric_name == 'temperature_cold_warning' and temperature_value > threshold:
-                        # Call the 'freecooling_turbo' function when 'temperature_cold_warning' exceeds threshold
                         actions.freecooling_turbo(temperature_value)
                         print(f" Room in Freecooling Turbo Mode: Cold Ailse Temperature of ({temperature_value}°C) is above Tolerance")
                         action_taken = True
                         break  # Exit the loop once the condition is met
+                    # Call the 'passive_cooling' function when 'temperature_cold_min' is under the threshold
                     elif metric_name == 'temperature_cold_min' and temperature_value < threshold:
-                        # Call the 'passive_cooling' function when 'temperature_cold_min' is under the threshold
                         actions.passive_cooling(temperature_value)
                         print(f" Room in Passive Mode: Cold Ailse Temperature of ({temperature_value}°C) is below Tolerance")
                         action_taken = True
