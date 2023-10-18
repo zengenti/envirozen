@@ -11,13 +11,17 @@ intled = machine.Pin("LED", machine.Pin.OUT)
 ssid = '**ZSENPOD**'
 password = 'allchildrenexceptonegrowup'
  
+# Board location, this will be used in the Prometheus metrics to identify the sensor
+# it can be a location or a name
+location = 'external'
+hostname = 'Envirozen_' + location
+
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(ssid, password)
 
-# Board location, this will be used in the Prometheus metrics to identify the sensor
-# it can be a location or a name
-location = 'hot'
+# Set the hostname
+# machine.set_hostname(hostname) # Not supported in MicroPython
 
 # This will be replaced with the actual metric values
 metrics_template = """

@@ -10,5 +10,8 @@ Pico W Sensor Cold
 Pico W Sensor External
 28:CD:C1:0B:D9:E2
 
-Raspberry Pi4
+Raspberry Pi4 Wifi
 D8:3A:DD:55:FF:9D
+
+Raspberry Pi4 Cable
+D8:3A:DD:55:FF:9A
