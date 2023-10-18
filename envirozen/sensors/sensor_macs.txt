@@ -1,0 +1,14 @@
+Pico W Sensor Ambient
+28:CD:C1:08:BD:BB
+
+Pico W Sensor Hot
+28:CD:C1:0B:D9:DF
+
+Pico W Sensor Cold
+28:CD:C1:08:BD:BD
+
+Pico W Sensor External
+28:CD:C1:0B:D9:E2
+
+Raspberry Pi4
+D8:3A:DD:55:FF:9D

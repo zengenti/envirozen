@@ -8,8 +8,8 @@ from machine import Pin
  
 intled = machine.Pin("LED", machine.Pin.OUT)
   
-ssid = 'This is for Me!!!'
-password = 'Simply13579'
+ssid = '**ZSENPOD**'
+password = 'allchildrenexceptonegrowup'
  
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
@@ -17,7 +17,7 @@ wlan.connect(ssid, password)
 
 # Board location, this will be used in the Prometheus metrics to identify the sensor
 # it can be a location or a name
-location = 'ambient'
+location = 'hot'
 
 # This will be replaced with the actual metric values
 metrics_template = """
