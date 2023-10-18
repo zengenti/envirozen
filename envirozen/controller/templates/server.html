@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="10">
+    <link rel="stylesheet" type="text/css" href="http://randomnerdtutorials.com/ethernetcss.css">
+    <title>Server Room Cooling Mode</title>
+</head>
+<body>
+    <h1>Server Room Cooling Mode!</h1>
+    <hr>
+    <h2>Temperatures:</h2>
+    <p>Hot Aisle: {{ metric_values.get('temperature_hot', 'N/A') }}°C</p>
+    <p>Cold Aisle: {{ metric_values.get('temperature_cold', 'N/A') }}°C</p>
+    <p>Under Floor: {{ metric_values.get('temperature_floor', 'N/A') }}°C</p>
+    <p>Ambient: {{ metric_values.get('temperature_ambient', 'N/A') }}°C</p>
+    <!-- Add similar lines for other metrics -->
+
+    <h2>Manually Override the Cooling Mode of the Room!!</h2>
+    <p>AC - State: <!-- Replace with the actual value --> </p>
+    <p>Fan1 - State: <!-- Replace with the actual value --> </p>
+    <p>Fan2 - State: <!-- Replace with the actual value --> </p>
+    <p>Actuator - State: <!-- Replace with the actual value --> </p>
+
+    <!-- Display AC state with a toggle button -->
+    <!-- Use actual values of "ac" to determine the link -->
+    <a href="/AC">Turn AC On</a>
+    <!-- OR -->
+    <a href="/Auto">Turn AC Off</a>
+
+    <!-- Display Fan1 state with a toggle button -->
+    <!-- Use actual values of "fan1" to determine the link -->
+    <a href="/Fan">Turn Fan1 On</a>
+    <!-- OR -->
+    <a href="/Auto">Turn Fan1 Off</a>
+</body>
+</html>

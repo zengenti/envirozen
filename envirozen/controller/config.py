@@ -1,7 +1,7 @@
 # Define the time interval (in seconds) between metric evaluations
 evaluation_interval = 10  # Reevaluation period in seconds
 
-PROMETHEUS_URL = 'http://10.128.83.10:9090' 
+# PROMETHEUS_URL = 'http://10.128.83.10:9090' 
 PROMETHEUS_URL = 'http://192.168.88.88:9090' # Testing URL
 
 METRIC_THRESHOLDS = {

@@ -1,2 +1,4 @@
 requests==2.26.0
 RPi.GPIO==0.7.1
+prometheus-api-client
+flask
