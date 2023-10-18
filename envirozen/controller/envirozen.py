@@ -12,6 +12,9 @@ def room_mode():
         # Print the name of the current metric
         print(f"{metric_name}:")
 
+        # Initialize temperature_value with a default value (e.g., None)
+        temperature_value = 1
+
         # Iterate over the result set from Prometheus
         for entry in result:
             # Extract the temperature value from the result entry
@@ -65,3 +68,5 @@ if __name__ == "__main__":
     while True:
         room_mode()  # Perform metric evaluation and actions
         time.sleep(config.evaluation_interval)  # Wait for the specified interval before re-evaluating
+
+

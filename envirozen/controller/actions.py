@@ -1,5 +1,8 @@
 import RPi.GPIO as GPIO
 
+# Disable GPIO warnings
+GPIO.setwarnings(False)
+
 # Use Broadcom SOC channel numbers
 GPIO.setmode(GPIO.BCM)
 FAN_1_PIN = 22
@@ -40,7 +43,7 @@ def open_damper():
 def close_damper():
     GPIO.output(DAMPER_PIN, GPIO.LOW)
 
-def ac_on(value):
+def ac_on():
     
     # Close the damper if AC is On
     # Turn off both fans
@@ -50,7 +53,7 @@ def ac_on(value):
     turn_off_fan_2()
     turn_on_ac()
 
-def freecooling(value):
+def freecooling():
     
     # Open the damper as AC is off
     # Turn on fan 1
@@ -61,7 +64,7 @@ def freecooling(value):
     turn_off_fan_2()
     turn_off_ac()
 
-def freecooling_turbo(value):
+def freecooling_turbo():
     
     # Open the damper as AC is off
     # Turn on both fans
@@ -71,7 +74,7 @@ def freecooling_turbo(value):
     turn_on_fan_2()
     turn_off_ac()
 
-def passive_cooling(value):
+def passive_cooling():
     
     # Open the damper as AC is off
     # Turn off both fans
