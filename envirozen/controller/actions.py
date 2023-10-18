@@ -40,14 +40,43 @@ def open_damper():
 def close_damper():
     GPIO.output(DAMPER_PIN, GPIO.LOW)
 
-def temperature_within_tolerance(value):
-    print(f"Temperature ({value}°C) is within Tolerance")
-
-    # Close the damper if temperature is below tolerance
-    close_damper()
-
-def temperature_above_tolerance(value):
-    print(f"Temperature ({value}°C) is above Tolerance")
+def ac_on(value):
     
-    # Open the damper if temperature is above tolerance
+    # Close the damper if AC is On
+    # Turn off both fans
+    # Turn on AC unit
+    close_damper()
+    turn_off_fan_1()
+    turn_off_fan_2()
+    turn_on_ac()
+
+def freecooling(value):
+    
+    # Open the damper as AC is off
+    # Turn on fan 1
+    # Turn off fan 2
+    # Turn off AC unit
     open_damper()
+    turn_on_fan_1()
+    turn_off_fan_2()
+    turn_off_ac()
+
+def freecooling_turbo(value):
+    
+    # Open the damper as AC is off
+    # Turn on both fans
+    # Turn off AC unit
+    open_damper()
+    turn_on_fan_1()
+    turn_on_fan_2()
+    turn_off_ac()
+
+def passive_cooling(value):
+    
+    # Open the damper as AC is off
+    # Turn off both fans
+    # Turn off AC unit
+    open_damper()
+    turn_off_fan_1()
+    turn_off_fan_2()
+    turn_off_ac()
