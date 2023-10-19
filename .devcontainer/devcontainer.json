@@ -1,13 +1,15 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "Ubuntu",
-	"image": "mcr.microsoft.com/devcontainers/base:jammy",
-	"features": {
-		"ghcr.io/devcontainers-contrib/features/starship:1": {
-			"version": "latest"
-		}
-	},
+    "name": "Ubuntu",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../"
+    },
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "4gb"
+    },
     "forwardPorts": [
         8080
     ],

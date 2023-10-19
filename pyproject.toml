@@ -8,11 +8,14 @@ authors = [
     { name = "Nic Kilby", email = "n.kilby@zengenti.com" },
     { name = "Joe Collins", email = "j.collins@zengenti.com" },
 ]
+description = "Zengenti Environment"
+readme = "README.md"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 dependencies = [
     "flask",
-    "mkdocs-mermaid2-plugin",
-    "mkdocs-roamlinks-plugin",
-    "mkdocs",
     "prometheus-api-client",
     "requests",
     "RPi.GPIO",
@@ -24,6 +27,9 @@ dev = [
     "debugpy",
     "ipython",
     "keyring",
+    "mkdocs-mermaid2-plugin",
+    "mkdocs-roamlinks-plugin",
+    "mkdocs",
     "molecule",
     "pip-tools",
     "setuptools",
