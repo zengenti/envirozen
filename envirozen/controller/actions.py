@@ -83,3 +83,44 @@ def passive_cooling(temperature_value):
     turn_off_fan_1()
     turn_off_fan_2()
     turn_off_ac()
+
+def ac_on_web():
+    
+    # Close the damper if AC is On
+    # Turn off both fans
+    # Turn on AC unit
+    close_damper()
+    turn_off_fan_1()
+    turn_off_fan_2()
+    turn_on_ac()
+
+def freecooling_web():
+    
+    # Open the damper as AC is off
+    # Turn on fan 1
+    # Turn off fan 2
+    # Turn off AC unit
+    open_damper()
+    turn_on_fan_1()
+    turn_off_fan_2()
+    turn_off_ac()
+
+def freecooling_turbo_web():
+    
+    # Open the damper as AC is off
+    # Turn on both fans
+    # Turn off AC unit
+    open_damper()
+    turn_on_fan_1()
+    turn_on_fan_2()
+    turn_off_ac()
+
+def passive_cooling_web():
+    
+    # Open the damper as AC is off
+    # Turn off both fans
+    # Turn off AC unit
+    open_damper()
+    turn_off_fan_1()
+    turn_off_fan_2()
+    turn_off_ac()
