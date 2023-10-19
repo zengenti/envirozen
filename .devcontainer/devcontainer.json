@@ -3,8 +3,7 @@
 {
     "name": "Ubuntu",
     "build": {
-        "dockerfile": "Dockerfile",
-        "context": "../"
+        "dockerfile": "Dockerfile"
     },
     "hostRequirements": {
         "cpus": 2,
