@@ -1,0 +1,25 @@
+{
+    "editor.rulers": [88],
+    "python.linting.pylintEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+      "./tests/pytest"
+    ],
+    "files.exclude": {
+        "**/*.pyc": {"when": "$(basename).py"}, 
+        "**/__pycache__": true,
+        "**/.pytest_cache": true
+    },
+    "python.terminal.activateEnvironment": true,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.formatOnSave": true
+    },
+    "editor.detectIndentation": true,
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Visual Studio Light",
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.scrollback": 100000,
+  }

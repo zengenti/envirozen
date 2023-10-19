@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[project]
+name = "zengenti_envirozen"
+version = "0.1.0"
+authors = [
+    { name = "Nic Kilby", email = "n.kilby@zengenti.com" },
+    { name = "Joe Collins", email = "j.collins@zengenti.com" },
+]
+dependencies = [
+    "flask",
+    "mkdocs-mermaid2-plugin",
+    "mkdocs-roamlinks-plugin",
+    "mkdocs",
+    "prometheus-api-client",
+    "requests",
+    "RPi.GPIO",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "debugpy",
+    "ipython",
+    "keyring",
+    "molecule",
+    "pip-tools",
+    "setuptools",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.mypy]
+files = "src/"
+ignore_missing_imports = true

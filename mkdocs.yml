@@ -1,0 +1,19 @@
+---
+site_name: Zengenti Environment
+repo_url: https://github.com/zengenti/envirozen
+
+plugins:
+    - mermaid2
+    - search
+    - roamlinks
+
+theme:
+    name: 'material'
+    palette:
+        - scheme: default
+          primary: indigo
+          accent: indigo
+
+mermaid2:
+    custom_css: true
+    theme: forest
