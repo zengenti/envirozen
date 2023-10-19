@@ -77,6 +77,7 @@ By default Grafana will be By default Grafana will be http://ipaddres:3000
 
 
 **Deployment of Envirozen**
+
 Copy `envirozen/envirozen/controller`
 
 ```
