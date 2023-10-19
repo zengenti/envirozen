@@ -5,6 +5,7 @@ import actions
 import envirozen
 import RPi.GPIO as GPIO
 import os
+import syslog
 
 app = Flask(__name__)
 
@@ -58,6 +59,7 @@ def ac_on():
     with open(STATUS_FILE, 'w') as file:
         file.write('manual')  # Switch to manual mode
     actions.ac_on_web()
+    syslog.syslog(syslog.LOG_INFO, "Manual AC Mode")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
@@ -66,6 +68,7 @@ def freecooling():
     with open(STATUS_FILE, 'w') as file:
         file.write('manual')  # Switch to manual mode
     actions.freecooling_web()
+    syslog.syslog(syslog.LOG_INFO, "Manual Freecooling Mode")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
@@ -74,6 +77,7 @@ def freecooling_turbo():
     with open(STATUS_FILE, 'w') as file:
         file.write('manual')  # Switch to manual mode
     actions.freecooling_turbo_web()
+    syslog.syslog(syslog.LOG_INFO, "Manual Freecooling Turbo Mode")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
@@ -82,6 +86,7 @@ def passive_cooling_web():
     with open(STATUS_FILE, 'w') as file:
         file.write('manual')  # Switch to manual mode
     actions.passive_cooling_web()
+    syslog.syslog(syslog.LOG_INFO, "Manual Passive Mode")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
@@ -90,6 +95,7 @@ def auto():
     with open(STATUS_FILE, 'w') as file:
         file.write('automatic')  # Switch back to automatic mode
     envirozen.evaluate_metrics()
+    syslog.syslog(syslog.LOG_INFO, "Automatic Mode")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 

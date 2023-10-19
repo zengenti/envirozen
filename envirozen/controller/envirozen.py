@@ -3,11 +3,13 @@ import config as config
 import actions as actions
 import time
 import subprocess
+import syslog
 
 def start_server():
-    # Start server.py as a separate process
+    # Start server.py as a separate process. Flask Web app @ http://envirozen.zengenti.io
     subprocess.Popen(["python3", "server.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
+# Create a file that records the mode of operation (manual or automatic)
 STATUS_FILE = 'status.txt'
 
 def evaluate_metrics():
@@ -18,7 +20,7 @@ def evaluate_metrics():
         'temperature_cold': (actions.ac_on, 'AC Mode', 'Cold Aisle Temperature', 'above Tolerance'),
     }
 
-    # Then, define the conditions for other cooling methods if AC is not needed
+    # Then, define the conditions for other cooling methods if AC is not needed. Neeeds work on ordering
     ac_off_conditions = {
         'temperature_cold_min': (actions.freecooling_turbo, 'Freecooling Mode', 'Cold Aisle Temperature', 'Within Tolerances'),
         'temperature_cold_warning': (actions.freecooling_turbo, 'Freecooling Turbo Mode', 'Cold Aisle Temperature', 'above Tolerance'),
@@ -27,7 +29,7 @@ def evaluate_metrics():
     # Check if we're in automatic mode
     with open(STATUS_FILE, 'r') as file:
         if file.read().strip() != 'automatic':
-            print("In manual mode; automatic adjustments paused.")
+            syslog.syslog(syslog.LOG_INFO, "In Manual mode; Envirozen automatic actinons paused.")
             return
 
     def evaluate_condition_set(condition_set):
@@ -47,7 +49,7 @@ def evaluate_metrics():
                     if threshold is not None and temperature_value > threshold:
                         # Condition met, perform action, and return True
                         action_function(temperature_value)
-                        print(f"Room in {mode}: {temp_type} of ({temperature_value}°C) is {tolerance_desc}")
+                        syslog.syslog(syslog.LOG_INFO, f"Room in {mode}: {temp_type} of ({temperature_value}°C) is {tolerance_desc}")
                         return True  # Exiting function since condition was met
         return False  # No conditions were met
 
@@ -61,7 +63,7 @@ def evaluate_metrics():
         # If no conditions in the second set are met, default to passive cooling
         if not alternative_cooling_activated:
             actions.passive_cooling(None)  # Assuming temperature value isn't needed here
-            print("Room in Passive Cooling Mode")
+            syslog.syslog(syslog.LOG_INFO, "Room in Passive Cooling Mode")
 
 def main():
     start_server()
