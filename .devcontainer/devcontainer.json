@@ -1,11 +1,20 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/universal
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-    "name": "Ubuntu with Pyenv",
-    "build": {
-        "dockerfile": "Dockerfile"
-    },
-    // "forwardPorts": [],
+	"name": "Ubuntu",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"version": "3.11"
+		},
+		"ghcr.io/devcontainers-contrib/features/starship:1": {
+			"version": "latest"
+		}
+	},
+    "forwardPorts": [
+        8080
+    ],
     "postCreateCommand": ". ./.devcontainer/post-create.sh  > ../post-create-log.txt",
     "customizations": {
         "vscode": {
