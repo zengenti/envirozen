@@ -1,25 +1,30 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/universal
 {
-	"name": "Ubuntu with Pyenv",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+    "name": "Ubuntu with Pyenv",
     "build": {
-        // Path is relative to the devcontainer.json file.
         "dockerfile": "Dockerfile"
     },
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+    // "forwardPorts": [],
     "postCreateCommand": ". ./.devcontainer/post-create.sh  > ../post-create-log.txt",
     "customizations": {
         "vscode": {
             "settings": {},
             "extensions": [
+                "bierner.markdown-mermaid",
+                "charliermarsh.ruff",
+                "eamodio.gitlens",
+                "ms-python.black-formatter",
+                "ms-python.isort",
+                "ms-python.mypy-type-checker",
                 "ms-python.pylint",
                 "ms-python.python",
-                "streetsidesoftware.code-spell-checker"
+                "sourcery.sourcery",
+                "streetsidesoftware.code-spell-checker",
+                "tamasfe.even-better-toml"
             ]
         }
     }
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
 }
