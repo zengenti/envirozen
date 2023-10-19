@@ -94,7 +94,7 @@ sudo systemctl restart envirozen
 
 Web interface is http://envirozen.zengenti.io:5000
 
-* Envirozen.py does the following:
+Envirozen.py does the following:
 * Starts the Flask Web Server
 * Evaluates Promethues metrics
 * Reads a Status file to determine the operation mode
