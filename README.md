@@ -94,12 +94,12 @@ sudo systemctl restart envirozen
 
 Web interface is http://envirozen.zengenti.io:5000
 
-*Envirozen.py does the following:
-*Starts the Flask Web Server
-*Evaluates Promethues metrics
-*Reads a Status file to determine the operation mode
-*Checks the conditions for actions
-*Runs in a loop defined in config.py
+* Envirozen.py does the following:
+* Starts the Flask Web Server
+* Evaluates Promethues metrics
+* Reads a Status file to determine the operation mode
+* Checks the conditions for actions
+* Runs in a loop defined in config.py
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
 [2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139
