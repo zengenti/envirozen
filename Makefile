@@ -19,7 +19,7 @@ format:  # Format the code with black.
 
 .PHONY: help
 help: # Show help for each of the makefile recipes.
-	@grep -E '^[a-zA-Z0-9 -]+:.*#'  makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
+	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
 lint:  # Lint the code with ruff.
 	.venv/bin/python -m ruff .
