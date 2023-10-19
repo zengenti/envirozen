@@ -21,5 +21,3 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
         git 
 
 RUN git clone https://github.com/pyenv/pyenv.git /pyenv
-ENV PYENV_ROOT /pyenv
-RUN eval "$(/pyenv/bin/pyenv init -)" && /pyenv/bin/pyenv local 3.10.10 && pip install numpy poetry setuptools wheel six auditwheel
