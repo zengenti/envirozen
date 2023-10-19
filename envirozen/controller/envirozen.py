@@ -1,86 +1,62 @@
-# Import necessary configurations and functions
 from prometheus import query_prometheus
 import config as config
 import actions as actions
 import time
+import subprocess
 
-def room_mode():
+def start_server():
+    # Start server.py as a separate process
+    subprocess.Popen(["python3", "server.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+def evaluate_metrics():
+    # Create a dictionary that maps metric names to actions and thresholds
+    metric_actions = {
+        'temperature_ambient': (actions.ac_on, 'AC Mode', 'Ambient Temperature', 'above Tolerance'),
+        'temperature_hot': (actions.ac_on, 'AC Mode', 'Hot Aisle Temperature', 'above Tolerance'),
+        'temperature_cold': (actions.ac_on, 'AC Mode', 'Cold Aisle Temperature', 'above Tolerance'),
+        'temperature_cold_warning': (actions.freecooling_turbo, 'Freecooling Turbo Mode', 'Cold Aisle Temperature', 'above Tolerance'),
+        'temperature_cold_min': (actions.freecooling, 'Freecooling Mode', 'Cold Aisle Temperature', 'Within Tolerances'),
+    }
+
+    # Initialize a flag to determine if any condition was met
+    condition_met = False
+
     # Iterate over all metric names and their corresponding queries
-    for metric_name, query in config.QUERIES.items():
+    for metric_name, (action_function, mode, temp_type, tolerance_desc) in metric_actions.items():
         # Query Prometheus for the metric data
-        result = query_prometheus(query)
-        # Print the name of the current metric
-        # print(f"{metric_name}:")
+        result = query_prometheus(query=config.QUERIES.get(metric_name))
 
         # Initialize temperature_value with a default value (e.g., None)
-        temperature_value = 1
+        temperature_value = None
 
         # Iterate over the result set from Prometheus
         for entry in result:
             # Extract the temperature value from the result entry
             temperature = entry.get('value', [None, None])[1]
-            
+
             # If a temperature value is found, process it
-            if temperature:
-                # Convert the temperature value to a float for comparison
+            if temperature is not None:
                 temperature_value = float(temperature)
-                action_taken = False
 
-                # Retrieve the threshold for the current metric from the METRIC_THRESHOLDS dictionary in config.py
-                threshold = config.METRIC_THRESHOLDS.get(metric_name, None)
-                
+                # Retrieve the threshold for the current metric
+                threshold = config.METRIC_THRESHOLDS.get(metric_name)
+
                 # Check if there's a defined threshold for the current metric
-                if threshold is not None:
+                if threshold is not None and temperature_value > threshold:
+                    action_function(temperature_value)
+                    print(f"Room in {mode}: {temp_type} of ({temperature_value}°C) is {tolerance_desc}")
+                    condition_met = True  # Set the flag to True when a condition is met
 
-                    # Call the 'ac_on' function when 'temperature_ambient' exceeds threshold
-                    if metric_name == 'temperature_ambient' and temperature_value > threshold:
-                        actions.ac_on(temperature_value)
-                        print(f" Room in AC Mode: Ambient Temperature of ({temperature_value}°C) is above Tolerance")
-                        action_taken = True
-                        break  # Exit the loop once the condition is met
-                    # Call the 'ac_on' function when 'temperature_hot' exceeds threshold
-                    elif metric_name == 'temperature_hot' and temperature_value > threshold:
-                        actions.ac_on(temperature_value)
-                        print(f" Room in AC Mode: Hot Ailse Temperature of ({temperature_value}°C) is above Tolerance")
-                        action_taken = True
-                        break  # Exit the loop once the condition is met
-                    # Call the 'ac_on' function when 'temperature_cold' exceeds threshold
-                    elif metric_name == 'temperature_cold' and temperature_value > threshold:
-                        actions.ac_on(temperature_value)
-                        print(f" Room in AC Mode: Cold Ailse Temperature of ({temperature_value}°C) is above Tolerance")
-                        action_taken = True
-                        break  # Exit the loop once the condition is met
-                    # Call the 'freecooling_turbo' function when 'temperature_cold_warning' exceeds threshold
-                    elif metric_name == 'temperature_cold_warning' and temperature_value > threshold:
-                        actions.freecooling_turbo(temperature_value)
-                        print(f" Room in Freecooling Turbo Mode: Cold Ailse Temperature of ({temperature_value}°C) is above Tolerance")
-                        action_taken = True
-                        break  # Exit the loop once the condition is met
-                    # Call the 'passive_cooling' function when 'temperature_cold_min' is under the threshold
-                    elif metric_name == 'temperature_cold_min' and temperature_value < threshold:
-                        actions.passive_cooling(temperature_value)
-                        print(f" Room in Passive Mode: Cold Ailse Temperature of ({temperature_value}°C) is below Tolerance")
-                        action_taken = True
-                        break  # Exit the loop once the condition is met
-                    else:
-                        # All values are within tolerence for FreeCooling
-                        actions.freecooling(temperature_value)
-                        print(f" Room in Freecooling Mode: All temperature are with Tolerance")
-                else:
-                    # If no threshold is defined for the metric, just print the temperature value
-                    print(temperature_value)
-        # If an action was taken, break out of the outer loop
-        if action_taken:
-            break
+    # If no condition was met, set the room mode to passive
+    if not condition_met:
+        actions.passive_cooling(temperature_value)
+        print(f"Room in Passive Cooling Mode: ({temperature_value}°C)")
 
-        # Print a separator for clarity
-        print("-----------------------")
-
-# Main execution starts here
-if __name__ == "__main__":
-
+def main():
+    start_server()  # Start the server process
     while True:
-        room_mode()  # Perform metric evaluation and actions
+        evaluate_metrics()  # Perform metric evaluation and actions
         time.sleep(config.evaluation_interval)  # Wait for the specified interval before re-evaluating
 
-
+if __name__ == "__main__":
+    main()

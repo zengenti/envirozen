@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=headhoncho
 WorkingDirectory=/home/headhoncho/envirozen/envirozen/controller/
-ExecStart=/usr/bin/python3 /home/headhoncho/envirozen/envirozen/controller/server.py
+ExecStart=/usr/bin/python3 /home/headhoncho/envirozen/envirozen/controller/envirozen.py
 Restart=always
 
 [Install]
