@@ -3,6 +3,7 @@ import config as config
 from flask import Flask, render_template, redirect, url_for
 import actions
 import envirozen
+import RPi.GPIO as GPIO
 
 app = Flask(__name__)
 
@@ -13,6 +14,26 @@ prometheus_api = PrometheusConnect(url=config.PROMETHEUS_URL)
 def display_temperature():
     # Create an empty dictionary to store metric names and values
     metric_values = {}
+
+    FAN_1_PIN = 22
+    FAN_2_PIN = 26
+    AC_PIN = 6
+    DAMPER_PIN = 4
+
+    # Read the state of PINs
+    ac_pin_state = GPIO.input(AC_PIN)
+    damper_pin_state = GPIO.input(DAMPER_PIN)
+    fan1_pin_state = GPIO.input(FAN_1_PIN)
+    fan2_pin_state = GPIO.input(FAN_2_PIN)
+
+    # Map GPIO states to human-readable strings
+    pin_state_mapping = {GPIO.HIGH: "ON", GPIO.LOW: "OFF"}
+
+    # Add PIN states to the metric_values dictionary
+    metric_values['ac_pin_state'] = pin_state_mapping.get(ac_pin_state, "UNKNOWN")
+    metric_values['damper_pin_state'] = pin_state_mapping.get(damper_pin_state, "UNKNOWN")
+    metric_values['fan1_pin_state'] = pin_state_mapping.get(fan1_pin_state, "UNKNOWN")
+    metric_values['fan2_pin_state'] = pin_state_mapping.get(fan2_pin_state, "UNKNOWN")
 
     # Iterate over all metric names and their corresponding queries
     for metric_name, query in config.QUERIES.items():

@@ -1,0 +1,12 @@
+[Unit]
+Description=FreeCooling Web App
+After=network.target
+
+[Service]
+User=headhoncho
+WorkingDirectory=/home/headhoncho/envirozen/envirozen/controller/
+ExecStart=/usr/bin/python3 /home/headhoncho/envirozen/envirozen/controller/server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
