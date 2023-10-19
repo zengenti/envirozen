@@ -4,11 +4,13 @@ from flask import Flask, render_template, redirect, url_for
 import actions
 import envirozen
 import RPi.GPIO as GPIO
+import os
 
 app = Flask(__name__)
 
 # Initialize Prometheus client using the URL from config
 prometheus_api = PrometheusConnect(url=config.PROMETHEUS_URL)
+STATUS_FILE = 'status.txt'
 
 @app.route('/')
 def display_temperature():
@@ -53,31 +55,41 @@ def display_temperature():
 
 @app.route('/ac')
 def ac_on():
+    with open(STATUS_FILE, 'w') as file:
+        file.write('manual')  # Switch to manual mode
     actions.ac_on_web()
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
 @app.route('/freecooling')
 def freecooling():
+    with open(STATUS_FILE, 'w') as file:
+        file.write('manual')  # Switch to manual mode
     actions.freecooling_web()
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
 @app.route('/freecooling_turbo')
 def freecooling_turbo():
+    with open(STATUS_FILE, 'w') as file:
+        file.write('manual')  # Switch to manual mode
     actions.freecooling_turbo_web()
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
 @app.route('/passive')
 def passive_cooling_web():
+    with open(STATUS_FILE, 'w') as file:
+        file.write('manual')  # Switch to manual mode
     actions.passive_cooling_web()
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 
 @app.route('/auto')
 def auto():
-    envirozen.room_mode()
+    with open(STATUS_FILE, 'w') as file:
+        file.write('automatic')  # Switch back to automatic mode
+    envirozen.evaluate_metrics()
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
 

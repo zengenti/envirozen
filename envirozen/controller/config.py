@@ -6,11 +6,11 @@ PROMETHEUS_URL = 'http://192.168.88.88:9090' # Testing URL
 
 METRIC_THRESHOLDS = {
     'temperature_ambient': 40,  # Max Ambient outdoor temperature
-    'temperature_floor': 20,  # Max Under floor temperature
-    'temperature_hot': 30,  # Max Hot Aisle temperature
+    'temperature_floor': 40,  # Max Under floor temperature
+    'temperature_hot': 40,  # Max Hot Aisle temperature
     'temperature_cold':40,  # Max Cold Aisle temperature
-    'temperature_cold_warning': 35,  # Warming Cold Aisle temperature
-    'temperature_cold_min': 32,  # Minimum Cold Aisle temperature
+    'temperature_cold_warning': 20,  # Warming Cold Aisle temperature
+    'temperature_cold_min': 10,  # Minimum Cold Aisle temperature
 }
 QUERIES = {
     'temperature_ambient': 'temperature{location="ambient"}',

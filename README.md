@@ -73,8 +73,25 @@ snap services
 [Grafana][7] will be installed locally with the normal node exporter dashboard plus a custom dashboard from the sensors.
 
 By default Prometheus will be http://ipaddres:9090
-By default Grafana will be http://ipaddres:3000
+By default Grafana will be By default Grafana will be http://ipaddres:3000
 
+
+**Deployment of Envirozen**
+Copy `envirozen/envirozen/controller`
+
+```
+pip install -r requirements.txt
+```
+Update config.py with values for Prometheus server and set Metric thresholds for the room.
+Create envirozen.service in `etc/systemd/system` using file as a template.
+```
+sudo systemctl daemon-reload
+```
+```
+sudo systemctl restart envirozen
+```
+
+Web interface is http://envirozen.zengenti.io:5000
 
 [1]: https://www.raspberrypi.com/products/raspberry-pi-4-model-b/
 [2]: https://shop.pimoroni.com/products/enviro-indoor?variant=40055644717139

@@ -8,55 +8,68 @@ def start_server():
     # Start server.py as a separate process
     subprocess.Popen(["python3", "server.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
+STATUS_FILE = 'status.txt'
+
 def evaluate_metrics():
-    # Create a dictionary that maps metric names to actions and thresholds
-    metric_actions = {
+    # First, define the conditions under which AC should be turned on
+    ac_on_conditions = {
         'temperature_ambient': (actions.ac_on, 'AC Mode', 'Ambient Temperature', 'above Tolerance'),
         'temperature_hot': (actions.ac_on, 'AC Mode', 'Hot Aisle Temperature', 'above Tolerance'),
         'temperature_cold': (actions.ac_on, 'AC Mode', 'Cold Aisle Temperature', 'above Tolerance'),
-        'temperature_cold_warning': (actions.freecooling_turbo, 'Freecooling Turbo Mode', 'Cold Aisle Temperature', 'above Tolerance'),
-        'temperature_cold_min': (actions.freecooling, 'Freecooling Mode', 'Cold Aisle Temperature', 'Within Tolerances'),
     }
 
-    # Initialize a flag to determine if any condition was met
-    condition_met = False
+    # Then, define the conditions for other cooling methods if AC is not needed
+    ac_off_conditions = {
+        'temperature_cold_min': (actions.freecooling_turbo, 'Freecooling Mode', 'Cold Aisle Temperature', 'Within Tolerances'),
+        'temperature_cold_warning': (actions.freecooling_turbo, 'Freecooling Turbo Mode', 'Cold Aisle Temperature', 'above Tolerance'),
+    }
 
-    # Iterate over all metric names and their corresponding queries
-    for metric_name, (action_function, mode, temp_type, tolerance_desc) in metric_actions.items():
-        # Query Prometheus for the metric data
-        result = query_prometheus(query=config.QUERIES.get(metric_name))
+    # Check if we're in automatic mode
+    with open(STATUS_FILE, 'r') as file:
+        if file.read().strip() != 'automatic':
+            print("In manual mode; automatic adjustments paused.")
+            return
 
-        # Initialize temperature_value with a default value (e.g., None)
-        temperature_value = None
+    def evaluate_condition_set(condition_set):
+        """Evaluate a set of conditions against the current metrics."""
+        for metric_name, (action_function, mode, temp_type, tolerance_desc) in condition_set.items():
+            # Query Prometheus for the metric data
+            result = query_prometheus(query=config.QUERIES.get(metric_name))
+            temperature_value = None  # Initialize temperature_value
 
-        # Iterate over the result set from Prometheus
-        for entry in result:
-            # Extract the temperature value from the result entry
-            temperature = entry.get('value', [None, None])[1]
+            for entry in result:
+                # Extract and process temperature value
+                temperature = entry.get('value', [None, None])[1]
+                if temperature is not None:
+                    temperature_value = float(temperature)
+                    threshold = config.METRIC_THRESHOLDS.get(metric_name)
 
-            # If a temperature value is found, process it
-            if temperature is not None:
-                temperature_value = float(temperature)
+                    if threshold is not None and temperature_value > threshold:
+                        # Condition met, perform action, and return True
+                        action_function(temperature_value)
+                        print(f"Room in {mode}: {temp_type} of ({temperature_value}°C) is {tolerance_desc}")
+                        return True  # Exiting function since condition was met
+        return False  # No conditions were met
 
-                # Retrieve the threshold for the current metric
-                threshold = config.METRIC_THRESHOLDS.get(metric_name)
+    # First, evaluate conditions for turning on the AC
+    ac_needed = evaluate_condition_set(ac_on_conditions)
 
-                # Check if there's a defined threshold for the current metric
-                if threshold is not None and temperature_value > threshold:
-                    action_function(temperature_value)
-                    print(f"Room in {mode}: {temp_type} of ({temperature_value}°C) is {tolerance_desc}")
-                    condition_met = True  # Set the flag to True when a condition is met
+    # If no AC on conditions met, evaluate the second set of conditions
+    if not ac_needed:
+        alternative_cooling_activated = evaluate_condition_set(ac_off_conditions)
 
-    # If no condition was met, set the room mode to passive
-    if not condition_met:
-        actions.passive_cooling(temperature_value)
-        print(f"Room in Passive Cooling Mode: ({temperature_value}°C)")
+        # If no conditions in the second set are met, default to passive cooling
+        if not alternative_cooling_activated:
+            actions.passive_cooling(None)  # Assuming temperature value isn't needed here
+            print("Room in Passive Cooling Mode")
 
 def main():
-    start_server()  # Start the server process
+    start_server()
     while True:
-        evaluate_metrics()  # Perform metric evaluation and actions
-        time.sleep(config.evaluation_interval)  # Wait for the specified interval before re-evaluating
+        evaluate_metrics()
+        time.sleep(config.evaluation_interval)
 
 if __name__ == "__main__":
+    with open(STATUS_FILE, 'w') as file:
+        file.write('automatic')  # Default mode
     main()
