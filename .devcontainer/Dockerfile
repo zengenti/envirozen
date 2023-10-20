@@ -30,3 +30,10 @@ RUN update-alternatives --install /usr/bin/python python ${PYENV_ROOT}/versions/
 # For convenience add pyenv to the .bashrc file for root.
 USER root
 RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+# Set the locale to UTF-8, the default with Ubuntu is Posix and this causes problems for Pyenv in CodeSpaces.
+RUN apt-get install -y locales \
+ && rm -rf /var/lib/apt/lists/* \
+ && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
+
