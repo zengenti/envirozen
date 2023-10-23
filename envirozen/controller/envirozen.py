@@ -29,7 +29,7 @@ def evaluate_metrics():
     # Check if we're in automatic mode
     with open(STATUS_FILE, 'r') as file:
         if file.read().strip() != 'automatic':
-            syslog.syslog(syslog.LOG_INFO, "In Manual mode; Envirozen automatic actinons paused.")
+            syslog.syslog(syslog.LOG_INFO, "In Manual mode; Envirozen automatic actions paused.")
             return
 
     def evaluate_condition_set(condition_set):
