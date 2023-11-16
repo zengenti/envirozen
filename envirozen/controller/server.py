@@ -31,9 +31,12 @@ def display_temperature():
 
     # Map GPIO states to human-readable strings
     pin_state_mapping = {GPIO.HIGH: "ON", GPIO.LOW: "OFF"}
+    # AC PIN state mapping is reveresed as we want the default (power absent)
+    # to mean we run with AC. This protects against the controller power failing etc.
+    ac_pin_state_mapping = {GPIO.HIGH: "OFF", GPIO.LOW: "ON"} 
 
     # Add PIN states to the metric_values dictionary
-    metric_values['ac_pin_state'] = pin_state_mapping.get(ac_pin_state, "UNKNOWN")
+    metric_values['ac_pin_state'] = ac_pin_state_mapping.get(ac_pin_state, "UNKNOWN")
     metric_values['damper_pin_state'] = pin_state_mapping.get(damper_pin_state, "UNKNOWN")
     metric_values['fan1_pin_state'] = pin_state_mapping.get(fan1_pin_state, "UNKNOWN")
     metric_values['fan2_pin_state'] = pin_state_mapping.get(fan2_pin_state, "UNKNOWN")

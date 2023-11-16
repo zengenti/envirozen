@@ -32,10 +32,10 @@ def turn_off_fan_2():
     GPIO.output(FAN_2_PIN, GPIO.LOW)
 
 def turn_on_ac():
-    GPIO.output(AC_PIN, GPIO.HIGH)
+    GPIO.output(AC_PIN, GPIO.LOW)
 
 def turn_off_ac():
-    GPIO.output(AC_PIN, GPIO.LOW)
+    GPIO.output(AC_PIN, GPIO.HIGH)
 
 def open_damper():
     GPIO.output(DAMPER_PIN, GPIO.HIGH)
