@@ -14,24 +14,23 @@
     <p>Cold Aisle: {{ metric_values.get('temperature_cold', 'N/A') }}°C</p>
     <p>Under Floor: {{ metric_values.get('temperature_floor', 'N/A') }}°C</p>
     <p>Ambient: {{ metric_values.get('temperature_ambient', 'N/A') }}°C</p>
-    <!-- Add similar lines for other metrics -->
 
-    <h2>Manually Override the Cooling Mode of the Room!!</h2>
+    <h2>Manually Override the Cooling Mode of the Room!</h2>
     <p>AC - State: {{ metric_values.ac_pin_state }}</p>
     <p>Fan1 - State: {{ metric_values.fan1_pin_state }}</p>
     <p>Fan2 - State: {{ metric_values.fan2_pin_state }}</p>
     <p>Damper - State: {{ metric_values.damper_pin_state }}</p>
 
-    <!-- Display AC state with a toggle button -->
+    <!-- Display the current status of the system -->
+    <h2>Status:</h2>
+    <p>{{ 'Emergency Mode Active' if emergency_mode else 'Normal Operation' }}</p>
 
+    <!-- Links for manual control -->
     <a href="/ac">AC Mode</a>
-
     <a href="/freecooling">Freecooling</a>
-
     <a href="/freecooling_turbo">Freecooling Turbo</a>
-
     <a href="/passive">Passive</a>
-
     <a href="/auto">Auto</a>
+    <a href="/emergency">Emergency</a>
 </body>
 </html>
