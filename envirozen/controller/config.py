@@ -2,7 +2,7 @@
 evaluation_interval = 10  # Reevaluation period in seconds
 MIN_AC_RUN_TIME = 300 # For example, 5 minutes
 
-PROMETHEUS_URL = 'http://10.128.83.10:9090' 
+PROMETHEUS_URL = 'http://10.128.83.10:9090'
 # PROMETHEUS_URL = 'http://192.168.88.88:9090' # Testing URL
 
 METRIC_THRESHOLDS = {
