@@ -11,12 +11,13 @@ def start_server():
 
 STATUS_FILE = 'status.txt'
 last_ac_activation_time = None
+ac_running = False  # Track whether the AC is currently running
 
 def evaluate_metrics():
     """Evaluate temperature metrics and determine the appropriate cooling mode."""
     
-    global last_ac_activation_time  # Use the global variable for tracking AC activation time
-    
+    global last_ac_activation_time, ac_running  # Track AC state and last activation time
+
     # Check if we're in automatic mode
     with open(STATUS_FILE, 'r') as file:
         if file.read().strip() != 'automatic':
@@ -53,6 +54,17 @@ def evaluate_metrics():
     temperature_hot_warning = config.METRIC_THRESHOLDS.get('temperature_hot')
     temperature_emergency = config.METRIC_THRESHOLDS.get('temperature_emergency')  # Emergency threshold
 
+    # If AC is currently running, check if it has run for at least MIN_AC_RUN_TIME
+    if ac_running and time.time() - last_ac_activation_time < config.MIN_AC_RUN_TIME:
+        # AC is still within the minimum run time, so prevent any mode switches
+        syslog.syslog(syslog.LOG_INFO, "AC running, waiting for minimum runtime before evaluating further actions.")
+        return
+
+    # If the minimum run time has passed, we can switch the AC off or change modes
+    if ac_running and time.time() - last_ac_activation_time >= config.MIN_AC_RUN_TIME:
+        # AC has completed the minimum runtime, allow switching modes
+        ac_running = False  # Reset AC state so it can be switched if necessary
+
     # Emergency condition: if temperature exceeds emergency threshold
     if temp_hot > temperature_emergency:
         # Emergency mode: Trigger emergency cooling actions
@@ -61,21 +73,13 @@ def evaluate_metrics():
         return
 
     # Evaluate other conditions based on temperature readings
-    if temp_hot > temperature_hot_warning:
-        # AC mode: Hot aisle temperature above the threshold, turn on AC
-        if last_ac_activation_time is None or time.time() - last_ac_activation_time >= config.MIN_AC_RUN_TIME:
+    if temp_hot > temperature_hot_warning or temp_ambient > temperature_ambient:
+        # AC mode: Hot aisle or Ambient temperature above the threshold, turn on AC
+        if not ac_running:
             last_ac_activation_time = time.time()
-            actions.ac_on(temp_hot)
-            syslog.syslog(syslog.LOG_INFO, f"Room in AC Mode: Hot Aisle Temperature ({temp_hot}°C) is above Tolerance")
-        return
-
-    # Evaluate other conditions based on temperature readings
-    if temp_ambient > temperature_ambient:
-        # AC mode: Ambient temperature above the threshold, turn on AC
-        if last_ac_activation_time is None or time.time() - last_ac_activation_time >= config.MIN_AC_RUN_TIME:
-            last_ac_activation_time = time.time()
-            actions.ac_on(temp_ambient)
-            syslog.syslog(syslog.LOG_INFO, f"Room in AC Mode: Ambient Temperature ({temp_ambient}°C) is above Tolerance")
+            ac_running = True
+            actions.ac_on(temp_hot if temp_hot > temperature_hot_warning else temp_ambient)
+            syslog.syslog(syslog.LOG_INFO, f"Room in AC Mode: Temperature exceeds threshold")
         return
 
     if temp_cold < temperature_cold_min:
@@ -92,8 +96,9 @@ def evaluate_metrics():
         syslog.syslog(syslog.LOG_INFO, f"Room in Freecooling Turbo Mode: Cold Aisle Temperature ({temp_cold}°C) is between Normal and Warning")
     else:
         # AC mode: Cold aisle temperature exceeds warning threshold
-        if last_ac_activation_time is None or time.time() - last_ac_activation_time >= config.MIN_AC_RUN_TIME:
+        if not ac_running:
             last_ac_activation_time = time.time()
+            ac_running = True
             actions.ac_on(temp_cold)
             syslog.syslog(syslog.LOG_INFO, f"Room in AC Mode: Cold Aisle Temperature ({temp_cold}°C) is above Warning")
 
