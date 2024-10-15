@@ -94,10 +94,10 @@ def passive_cooling_web():
     return redirect(url_for('display_temperature'))
 
 @app.route('/emergency')
-def emergency_web():
+def emergency():
     with open(STATUS_FILE, 'w') as file:
         file.write('emergency')  # Switch to emergency mode
-    actions.passive_cooling_web()
+    actions.emergency_web()
     syslog.syslog(syslog.LOG_INFO, "Emergency Mode - All on")
     # Redirect back to the main page after the action is performed
     return redirect(url_for('display_temperature'))
