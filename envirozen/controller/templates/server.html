@@ -2,13 +2,17 @@
 <html>
 <head>
     <meta http-equiv="refresh" content="10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="http://randomnerdtutorials.com/ethernetcss.css">
     <title>Server Room Cooling Mode</title>
 </head>
 <body>
     <h1>Server Room Cooling Mode!</h1>
+    
+    <!-- Grafana iframe -->
     <iframe src="http://10.128.83.10:3000/d/b45327e0-a7d5-43a4-ab2d-29301d9a4a46/sensors?orgId=1&refresh=10s&viewPanel=1&theme=light" width="1200" height="650"></iframe>
     <hr>
+
     <h2>Temperatures:</h2>
     <p>Hot Aisle: {{ metric_values.get('temperature_hot', 'N/A') }}°C</p>
     <p>Cold Aisle: {{ metric_values.get('temperature_cold', 'N/A') }}°C</p>
@@ -16,10 +20,27 @@
     <p>Ambient: {{ metric_values.get('temperature_ambient', 'N/A') }}°C</p>
 
     <h2>Manually Override the Cooling Mode of the Room!</h2>
-    <p>AC - State: {{ metric_values.ac_pin_state }}</p>
-    <p>Fan1 - State: {{ metric_values.fan1_pin_state }}</p>
-    <p>Fan2 - State: {{ metric_values.fan2_pin_state }}</p>
-    <p>Damper - State: {{ metric_values.damper_pin_state }}</p>
+    
+    <!-- Display the state of AC, Fans, and Damper with traffic light icons and text -->
+    <p>AC - State: 
+        <i class="fas fa-circle" style="color: {{ 'green' if metric_values.ac_pin_state == 'ON' else 'red' }}"></i> 
+        {{ 'On' if metric_values.ac_pin_state == 'ON' else 'Off' }}
+    </p>
+    
+    <p>Fan1 - State: 
+        <i class="fas fa-circle" style="color: {{ 'green' if metric_values.fan1_pin_state == 'ON' else 'red' }}"></i> 
+        {{ 'On' if metric_values.fan1_pin_state == 'ON' else 'Off' }}
+    </p>
+    
+    <p>Fan2 - State: 
+        <i class="fas fa-circle" style="color: {{ 'green' if metric_values.fan2_pin_state == 'ON' else 'red' }}"></i> 
+        {{ 'On' if metric_values.fan2_pin_state == 'ON' else 'Off' }}
+    </p>
+    
+    <p>Damper - State: 
+        <i class="fas fa-circle" style="color: {{ 'green' if metric_values.damper_pin_state == 'ON' else 'red' }}"></i> 
+        {{ 'Open' if metric_values.damper_pin_state == 'ON' else 'Closed' }}
+    </p>
 
     <!-- Display the current status of the system -->
     <h2>Status:</h2>
