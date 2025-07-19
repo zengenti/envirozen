@@ -1,0 +1,148 @@
+# Envirozen Configuration File
+# Copy this file to config.py and update with your settings
+
+# Evaluation Settings
+# How often (in seconds) the system evaluates temperature conditions
+evaluation_interval = 10
+
+# Minimum time (in seconds) AC must run before switching modes
+# This prevents rapid cycling which can damage AC equipment
+MIN_AC_RUN_TIME = 300  # 5 minutes
+
+# Prometheus Configuration
+# URL of your Prometheus server
+PROMETHEUS_URL = 'http://10.128.83.10:9090'
+# Alternative for testing: 'http://192.168.88.88:9090'
+
+# Temperature Thresholds (in Celsius)
+# Adjust these values based on your environment and requirements
+METRIC_THRESHOLDS = {
+    # Maximum ambient outdoor temperature for free cooling
+    # Above this temperature, the system won't use ambient air
+    'temperature_ambient': 25,
+    
+    # Maximum under-floor temperature threshold
+    # Used for monitoring data center cooling effectiveness
+    'temperature_floor': 20,
+    
+    # Maximum hot aisle temperature before AC activation
+    # Critical threshold for equipment protection
+    'temperature_hot': 31,
+    
+    # Emergency hot aisle temperature
+    # Triggers emergency cooling mode (all fans + AC)
+    'temperature_emergency': 36,
+    
+    # Target cold aisle temperature
+    # Optimal operating temperature for servers
+    'temperature_cold': 20,
+    
+    # Cold aisle warning temperature
+    # Indicates cooling system needs more capacity
+    'temperature_cold_warning': 25,
+    
+    # Minimum cold aisle temperature
+    # Below this, heating might be needed or passive cooling sufficient
+    'temperature_cold_min': 10,
+}
+
+# Prometheus Queries
+# These map to the metrics exposed by your sensors
+# Format: metric_name{label="value"}
+QUERIES = {
+    'temperature_ambient': 'temperature{location="ambient"}',
+    'temperature_floor': 'temperature{location="floor"}',
+    'temperature_hot': 'temperature{location="hot"}',
+    'temperature_emergency': 'temperature{location="hot"}',  # Same as hot aisle
+    'temperature_cold': 'temperature{location="cold"}',
+    'temperature_cold_warning': 'temperature{location="cold"}',
+    'temperature_cold_min': 'temperature{location="cold"}',
+}
+
+# GPIO Pin Configuration
+# Adjust these if your wiring differs from the standard setup
+GPIO_PINS = {
+    'fan_1': 22,      # Primary circulation fan
+    'fan_2': 26,      # Secondary circulation fan  
+    'ac_unit': 6,     # Air conditioning control
+    'damper': 4,      # External air damper
+}
+
+# System Behavior Settings
+SYSTEM_CONFIG = {
+    # Enable/disable automatic mode on startup
+    'auto_mode_on_startup': True,
+    
+    # Default cooling mode if sensors fail
+    'fallback_mode': 'ac',  # Options: 'ac', 'freecooling', 'passive'
+    
+    # Enable GPIO control (set to False for testing without hardware)
+    'enable_gpio': True,
+    
+    # Web interface settings
+    'web_host': '0.0.0.0',
+    'web_port': 5000,
+    'web_debug': False,
+    
+    # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    'log_level': 'INFO',
+}
+
+# Sensor Configuration
+SENSOR_CONFIG = {
+    # Timeout for sensor queries (seconds)
+    'query_timeout': 10,
+    
+    # Number of retries for failed sensor queries
+    'query_retries': 3,
+    
+    # Expected sensor locations
+    'required_sensors': ['ambient', 'cold', 'hot'],
+    'optional_sensors': ['floor'],
+}
+
+# Alert Thresholds
+# Configure when to generate alerts or notifications
+ALERT_THRESHOLDS = {
+    # Temperature differential that indicates problems
+    'hot_cold_differential_max': 15,  # Hot aisle should not be >15°C warmer than cold
+    
+    # Maximum time in emergency mode before alert
+    'emergency_mode_max_duration': 1800,  # 30 minutes
+    
+    # Sensor offline duration before alert
+    'sensor_offline_threshold': 300,  # 5 minutes
+}
+
+# Hysteresis Settings
+# Prevent rapid mode switching by adding buffer zones
+HYSTERESIS = {
+    # Temperature buffer when switching between modes (°C)
+    'temperature_buffer': 1.0,
+    
+    # Time buffer between mode switches (seconds)
+    'mode_switch_delay': 60,
+}
+
+# Development/Testing Settings
+DEV_CONFIG = {
+    # Enable mock GPIO for development without hardware
+    'use_mock_gpio': False,
+    
+    # Mock sensor endpoints for testing
+    'mock_sensors': {
+        'ambient': 'http://localhost:8081/metrics',
+        'cold': 'http://localhost:8082/metrics', 
+        'hot': 'http://localhost:8083/metrics',
+        'floor': 'http://localhost:8084/metrics',
+    },
+    
+    # Simulate temperature readings for testing
+    'simulate_temperatures': False,
+    'simulated_temps': {
+        'ambient': 22.0,
+        'cold': 20.0,
+        'hot': 28.0,
+        'floor': 19.0,
+    }
+}
