@@ -102,11 +102,60 @@ def evaluate_metrics():
             actions.ac_on(temp_cold)
             syslog.syslog(syslog.LOG_INFO, f"Room in AC Mode: Cold Aisle Temperature ({temp_cold}°C) is above Warning")
 
+def wait_for_dependencies():
+    """Wait for required services to be available before starting."""
+    max_wait_time = 300  # 5 minutes
+    start_time = time.time()
+    
+    syslog.syslog(syslog.LOG_INFO, "Waiting for dependencies to become available...")
+    
+    while time.time() - start_time < max_wait_time:
+        try:
+            # Test Prometheus connectivity
+            test_query = 'up'
+            result = query_prometheus(test_query)
+            if result is not None:
+                syslog.syslog(syslog.LOG_INFO, "Prometheus connectivity confirmed")
+                return True
+        except Exception as e:
+            syslog.syslog(syslog.LOG_INFO, f"Waiting for Prometheus... ({e})")
+            
+        time.sleep(10)  # Wait 10 seconds before retry
+    
+    syslog.syslog(syslog.LOG_ERR, "Timed out waiting for dependencies")
+    return False
+
 def main():
     """Main function to start the server and continuously evaluate metrics."""
+    syslog.syslog(syslog.LOG_INFO, "Envirozen service starting...")
+    
+    # Wait for dependencies to be ready
+    if not wait_for_dependencies():
+        syslog.syslog(syslog.LOG_ERR, "Failed to initialize dependencies, exiting")
+        return
+    
+    # Start the web server
     start_server()
+    syslog.syslog(syslog.LOG_INFO, "Web server started")
+    
+    # Initialize GPIO to safe state
+    try:
+        import actions
+        actions.ac_on(0)  # Start in safe AC mode
+        syslog.syslog(syslog.LOG_INFO, "GPIO initialized to safe state (AC ON)")
+    except Exception as e:
+        syslog.syslog(syslog.LOG_ERR, f"Failed to initialize GPIO: {e}")
+        return
+    
+    syslog.syslog(syslog.LOG_INFO, "Envirozen service fully operational")
+    
+    # Main control loop
     while True:
-        evaluate_metrics()
+        try:
+            evaluate_metrics()
+        except Exception as e:
+            syslog.syslog(syslog.LOG_ERR, f"Error in main loop: {e}")
+            # Continue running but log the error
         time.sleep(config.evaluation_interval)
 
 if __name__ == "__main__":
