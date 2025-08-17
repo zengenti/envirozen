@@ -1,12 +1,29 @@
 [Unit]
-Description=FreeCooling Web App
-After=network.target
+Description=Envirozen Environmental Control System
+After=network-online.target prometheus.service grafana-server.service
+Wants=network-online.target
+Requires=network-online.target
 
 [Service]
+Type=simple
 User=headhoncho
+Group=gpio
 WorkingDirectory=/home/headhoncho/envirozen/envirozen/controller/
 ExecStart=/usr/bin/python3 /home/headhoncho/envirozen/envirozen/controller/envirozen.py
 Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=5
+
+# Environment variables
+Environment=PYTHONPATH=/home/headhoncho/envirozen/envirozen/controller
+Environment=HOME=/home/headhoncho
+
+# Security and resource limits
+PrivateDevices=false
+ProtectSystem=strict
+ReadWritePaths=/home/headhoncho/envirozen/envirozen/controller
+NoNewPrivileges=true
 
 [Install]
 WantedBy=multi-user.target
